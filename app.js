@@ -1,114 +1,99 @@
 window.addEventListener("load", solve);
 
-// Selectors
+function solve() {
+  // Selectors
 
-// Section Add Autumn Event
-const addAutumnEventForm = document.querySelector("form");
-const whenTimePicker = document.getElementById("time");
-const whenDatePicker = document.getElementById("date");
-const placeInput = document.getElementById("place");
-const eventInput = document.getElementById("event-name");
-const contactsInput = document.getElementById("email");
-const addEventButton = document.getElementById("add-btn");
-const clearButton = document.getElementById("clear");
+  // Section Add Autumn Event
+  const addAutumnEventForm = document.querySelector("form");
+  const whenTimePicker = document.getElementById("time");
+  const whenDatePicker = document.getElementById("date");
+  const placeInput = document.getElementById("place");
+  const eventInput = document.getElementById("event-name");
+  const contactsInput = document.getElementById("email");
+  const addEventButton = document.getElementById("add-btn");
+  const clearButton = document.getElementById("clear");
 
-let inputsAddAutumnEventSection = [
-  (whenTimePicker.value = `10:52`),
-  (whenDatePicker.value = `2024-02-07`),
-  (placeInput.value = `Palace of Culture`),
-  (eventInput.value = `Best of 2024`),
-  (contactsInput.value = `stiliyan_velinov@abv.bg`),
-];
+  let autumnEventState;
 
-// Section Last Check
-const checkList = document.getElementById("check-list");
-let editButton, continueButton;
+  // Section Last Check
+  const checkList = document.getElementById("check-list");
+  let editButton, continueButton;
 
-// Section Upcoming
-const upcomingList = document.getElementById("upcoming-list");
-let moveToFinishedButton;
+  // Section Upcoming
+  const upcomingList = document.getElementById("upcoming-list");
+  let moveToFinishedButton;
 
-// Section Finished
-const finishedList = document.getElementById("finished-list");
+  // Section Finished
+  const finishedList = document.getElementById("finished-list");
 
-// Global variables
-let addAutumnEventState, addList, addButtons;
+  // Global variables
+  let addAutumnEventState, addList, addButtons;
 
-function solve() {}
+  // Event handler functions
+  function addAutumnEventHandler(e) {
+    autumnEventState = {
+      time: whenTimePicker.value,
+      date: whenDatePicker.value,
+      place: placeInput.value,
+      event: eventInput.value,
+      contacts: contactsInput.value,
+    };
 
-// Event handler functions
-function addAutumnEventHandler(e) {
-  //   const uiFieldValuesForCheck = [
-  //     whenTimePicker.value,
-  //     whenDatePicker.value,
-  //     placeInput.value,
-  //     eventInput.value,
-  //     contactsInput.value,
-  //   ];
+    if (_isEmptyString()) {
+      alert("Please fulfill all the fields.");
+      return;
+    }
 
-  if (_isEmptyString()) {
-    alert("Please fulfill all the fields.");
-    return;
+    _displayLastCheckSection();
+    _resetAddAutumnEventSection();
   }
 
-  //   addAutumnEventState = {
-  //     ...inputsAddAutumnEventSection,
-  //   };
+  function editLastCheckHandler() {
+    _transferDataFromLastCheckToAddAutumnEvent();
+    checkList.firstElementChild.remove();
+    addEventButton.disabled = false;
+  }
 
-  // addAutumnEventState = {
-  //     time:
-  // }
+  function continueLastCheckHandler() {
+    let html;
+    checkList.firstElementChild.remove();
 
-  console.log(`addAutumnEventState: `);
-  console.log(addAutumnEventState);
-
-  _displayLastCheckSection();
-  _resetAddAutumnEventSection();
-}
-
-function editLastCheckHandler() {
-  _transferDataFromLastCheckToAddAutumnEvent();
-}
-
-function continueLastCheckHandler() {
-  let html;
-  checkList.firstElementChild.remove();
-
-  addButtons = `
+    addButtons = `
         <button class="finished-btn">Move to Finished</button>
         `;
-  html = addList.replace(`</li>`, addButtons + `</li>`);
-  upcomingList.insertAdjacentHTML("afterbegin", html);
+    html = addList.replace(`</li>`, addButtons + `</li>`);
+    upcomingList.insertAdjacentHTML("afterbegin", html);
 
-  moveToFinishedButton = document.querySelector(".finished-btn");
+    moveToFinishedButton = document.querySelector(".finished-btn");
 
-  // Add event listener to the just displayed 'move to finished' button
-  moveToFinishedButton.addEventListener("click", moveToFinishedHandler);
-}
+    // Add event listener to the just displayed 'move to finished' button
+    moveToFinishedButton.addEventListener("click", moveToFinishedHandler);
+  }
 
-function moveToFinishedHandler() {
-  let html;
-  upcomingList.firstElementChild.remove();
+  function moveToFinishedHandler() {
+    let html;
+    upcomingList.firstElementChild.remove();
 
-  html = addList;
-  finishedList.insertAdjacentHTML("afterbegin", html);
-}
+    html = addList;
+    finishedList.insertAdjacentHTML("afterbegin", html);
+  }
 
-function clearEventHandler() {
-  finishedList.firstElementChild.remove();
-  addEventButton.disabled = false;
-}
+  function clearEventHandler() {
+    finishedList.firstElementChild.remove();
+    addEventButton.disabled = false;
+  }
 
-// Helpers
+  // Helpers
 
-function _isEmptyString() {
-  console.log(inputsAddAutumnEventSection);
-  return inputsAddAutumnEventSection.some((input) => input === "");
-}
+  function _isEmptyString() {
+    const values = Object.values(autumnEventState);
 
-function _displayLastCheckSection() {
-  let html;
-  addList = `
+    return values.some((input) => input === "");
+  }
+
+  function _displayLastCheckSection() {
+    let html;
+    addList = `
         <li class="event-content">
             <article>
                 <p>Begins: ${whenDatePicker.value} at ${whenTimePicker.value}</p>
@@ -118,42 +103,40 @@ function _displayLastCheckSection() {
             </article>
         </li>
     `;
-  addButtons = `
+    addButtons = `
         <button class="edit-btn">Edit</button>
         <button class="continue-btn">Continue</button>
         `;
-  html = addList.replace(`</li>`, addButtons + `</li>`);
-  checkList.insertAdjacentHTML("afterbegin", html);
+    html = addList.replace(`</li>`, addButtons + `</li>`);
+    checkList.insertAdjacentHTML("afterbegin", html);
 
-  editButton = document.querySelector(".edit-btn");
-  continueButton = document.querySelector(".continue-btn");
+    editButton = document.querySelector(".edit-btn");
+    continueButton = document.querySelector(".continue-btn");
 
-  // Add evenet listeners to the just displayed 'edit' and 'continue' buttons
-  editButton.addEventListener("click", editLastCheckHandler);
-  continueButton.addEventListener("click", continueLastCheckHandler);
+    // Add evenet listeners to the just displayed 'edit' and 'continue' buttons
+    editButton.addEventListener("click", editLastCheckHandler);
+    continueButton.addEventListener("click", continueLastCheckHandler);
+  }
+
+  function _resetAddAutumnEventSection() {
+    whenTimePicker.value = "";
+    whenDatePicker.value = "";
+    placeInput.value = "";
+    eventInput.value = "";
+    contactsInput.value = "";
+
+    addEventButton.disabled = true;
+  }
+
+  function _transferDataFromLastCheckToAddAutumnEvent() {
+    whenTimePicker.value = autumnEventState.time;
+    whenDatePicker.value = autumnEventState.date;
+    placeInput.value = autumnEventState.place;
+    eventInput.value = autumnEventState.event;
+    contactsInput.value = autumnEventState.contacts;
+  }
+
+  // Event listeners
+  addEventButton.addEventListener("click", addAutumnEventHandler);
+  clearButton.addEventListener("click", clearEventHandler);
 }
-
-function _resetAddAutumnEventSection() {
-  inputsAddAutumnEventSection.fill("", 0, inputsAddAutumnEventSection.length);
-  whenTimePicker.value = "";
-  whenDatePicker.value = "";
-  placeInput.value = "";
-  eventInput.value = "";
-  contactsInput.value = "";
-
-  addEventButton.disabled = true;
-
-  console.log("_resetAddAutumnEventSection");
-  console.log(inputsAddAutumnEventSection);
-}
-
-function _transferDataFromLastCheckToAddAutumnEvent() {
-  console.log("within _transferDataFromLastCheckToAddAutumnEvent");
-}
-
-function _hideLastCheckSection() {}
-
-// Event listeners
-// addAutumnEventForm.addEventListener("submit", _addEventHandler);
-addEventButton.addEventListener("click", addAutumnEventHandler);
-clearButton.addEventListener("click", clearEventHandler);
