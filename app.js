@@ -26,10 +26,8 @@ const finishedList = document.getElementById("finished-list");
 const clearButton = document.getElementById("clear");
 
 // Global variables
-let addList, addButtons;
 let listItem = document.createElement("li");
 listItem.classList.add("event-content");
-let article;
 
 function solve() {
   // Event handler functions
@@ -96,7 +94,7 @@ function solve() {
     listItem.replaceChildren();
 
     // Creates the elements in the DOM
-    article = document.createElement("article");
+    const article = document.createElement("article");
 
     const paragraph1 = document.createElement("p");
     paragraph1.textContent = `Begins: ${whenDatePicker.value} at: ${whenTimePicker.value}`;
