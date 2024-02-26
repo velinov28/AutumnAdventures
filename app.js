@@ -11,7 +11,6 @@ function solve() {
   const eventInput = document.getElementById("event-name");
   const contactsInput = document.getElementById("email");
   const addEventButton = document.getElementById("add-btn");
-  const clearButton = document.getElementById("clear");
 
   let autumnEventState;
 
@@ -25,12 +24,13 @@ function solve() {
 
   // Section Finished
   const finishedList = document.getElementById("finished-list");
+  const clearButton = document.getElementById("clear");
 
   // Global variables
-  let addAutumnEventState, addList, addButtons;
+  let addList, addButtons;
 
   // Event handler functions
-  function addAutumnEventHandler(e) {
+  function addAutumnEventHandler() {
     autumnEventState = {
       time: whenTimePicker.value,
       date: whenDatePicker.value,
